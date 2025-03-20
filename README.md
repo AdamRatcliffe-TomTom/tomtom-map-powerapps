@@ -66,32 +66,3 @@ yarn build:watch
 This will build the control and open in the local PCF Control Sandbox.
 
 When running in the sandbox, the control will attempt to load the map page from `http://localhost:3000` so ensure that `tomtom-map-iframe` is running locally first.
-
-## 📁 Suggested Git Ignore
-Ensure the root `.gitignore` ignores both `node_modules`, `build/`, `out/`, and other artifacts:
-
-```
-# Global ignores
-node_modules/
-dist/
-build/
-out/
-*.log
-.DS_Store
-
-# PCF control
-tomtom-map-pcf/node_modules/
-tomtom-map-pcf/out/
-
-# React app
-tomtom-map-iframe/node_modules/
-tomtom-map-iframe/build/
-```
-
-## 📄 License
-
-_TBD — Add your license here (e.g., MIT, Apache 2.0, internal use only)._
-
-## 🙋‍♂️ Questions / Contributions
-
-Feel free to open an issue or submit a pull request if you'd like to contribute!
