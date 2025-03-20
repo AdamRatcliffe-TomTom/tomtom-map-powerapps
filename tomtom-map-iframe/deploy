@@ -1,0 +1,5 @@
+#!/bin/sh
+
+yarn build
+az storage azcopy blob delete -c '$web' --recursive --account-name cpmdemos -t tomtom-map-iframe
+az storage blob upload-batch -s build -d '$web/tomtom-map-iframe' --account-name cpmdemos
