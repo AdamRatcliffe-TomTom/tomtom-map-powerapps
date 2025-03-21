@@ -10,7 +10,7 @@ import MapStyles from "../constants/MapStyles";
 import geoJsonBounds from "../helpers/geoJsonBounds";
 
 const fitBoundsOptions = {
-  padding: { top: 60, right: 32, bottom: 32, left: 32 },
+  padding: { top: 90, right: 32, bottom: 32, left: 32 },
   animate: false
 };
 
