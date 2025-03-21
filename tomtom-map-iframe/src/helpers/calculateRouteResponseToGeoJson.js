@@ -11,7 +11,7 @@ export default function calculateRouteResponseToGeoJson(routingResponse) {
     };
   }
 
-  const features = routingResponse.routes.map((route, routeIndex) => {
+  const features = routingResponse.routes.map((route, index) => {
     const legCount = route.legs.length;
 
     const coordinatesList = route.legs.map((leg) =>
@@ -31,9 +31,9 @@ export default function calculateRouteResponseToGeoJson(routingResponse) {
 
     return {
       type: "Feature",
+      id: `route-${index}`,
       geometry,
       properties: {
-        routeIndex,
         summary: route.summary,
         sections: route.sections
       }

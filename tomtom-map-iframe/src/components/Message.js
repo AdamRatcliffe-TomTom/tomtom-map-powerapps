@@ -6,8 +6,6 @@ const MessageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: ${({ variant }) =>
-    variant === "error" ? "#fff5f5" : "#f9fafc"};
   font-family: sans-serif;
 `;
 
@@ -17,7 +15,7 @@ const MessageBox = styled.div`
     variant === "error" ? "#ffecec" : "#ffffff"};
   border: 1px solid
     ${({ variant }) => (variant === "error" ? "#f5c2c2" : "#e0e0e0")};
-  border-radius: 12px;
+  border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   font-size: 1.2rem;
   text-align: center;

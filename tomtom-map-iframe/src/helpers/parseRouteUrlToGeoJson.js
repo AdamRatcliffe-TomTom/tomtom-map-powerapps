@@ -25,6 +25,7 @@ export default function parseRouteUrlToGeoJson(url) {
 
     result.features.push({
       type: "Feature",
+      id: `location-${index}`,
       geometry: {
         type: "Point",
         coordinates: [lon, lat]

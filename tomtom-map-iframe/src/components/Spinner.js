@@ -13,8 +13,8 @@ const SpinnerWrapper = styled.div`
 `;
 
 const SpinnerCircle = styled.div`
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border: 4px solid #ccc;
   border-top-color: #0078d4;
   border-radius: 50%;

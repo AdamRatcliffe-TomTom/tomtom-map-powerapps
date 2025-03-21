@@ -132,13 +132,16 @@ export class TomTomMap
 
     iframe.contentWindow?.postMessage(
       {
-        apiKey,
-        center: [longitude, latitude],
-        zoom,
-        url,
-        method,
-        headers,
-        body
+        type: "pcfMapConfig",
+        payload: {
+          apiKey,
+          center: [longitude, latitude],
+          zoom,
+          url,
+          method,
+          headers,
+          body
+        }
       },
       "*"
     );

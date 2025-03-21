@@ -13,23 +13,22 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    window.addEventListener("message", (e) => {
-      if (e.data && e.data.apiKey) {
-        const parsedLat = Number(e.data.center?.[0]);
-        const parsedLng = Number(e.data.center?.[1]);
+    const handleMessage = (e) => {
+      const message = e.data;
 
-        const cleanedConfig = {
-          ...e.data,
-          center: [
-            isNaN(parsedLat) ? 0 : parsedLat,
-            isNaN(parsedLng) ? 0 : parsedLng
-          ],
-          method: e.data.method ? e.data.method.toUpperCase() : "GET"
-        };
+      if (!message || message.type !== "pcfMapConfig") return;
 
-        setConfig(cleanedConfig);
+      const payload = message.payload;
+      if (!payload.apiKey) {
+        setError("Missing API key in configuration message");
+        return;
       }
-    });
+
+      setConfig(payload);
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
   }, []);
 
   useEffect(() => {
@@ -52,9 +51,8 @@ function App() {
     runRequest();
   }, [config]);
 
+  if (error) return <Message variant="error">{error}</Message>;
   if (!config) return <Spinner />;
-
-  if (error) return <Message variant="error">Error: {error}</Message>;
 
   return (
     <Map

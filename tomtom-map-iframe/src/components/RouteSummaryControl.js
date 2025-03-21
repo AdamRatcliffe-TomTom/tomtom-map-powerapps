@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import { withMap } from "react-tomtom-maps";
 import styled from "styled-components";
+import JamIcon from "./icons/JamIcon";
+import DefaultColorPalette from "../DefaultColorPalette";
 
 const SummaryContainer = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 6px;
   font-size: 14px;
   background: white;
   padding: 8px 12px;
@@ -19,14 +21,22 @@ const SummaryItem = styled.div`
   flex-direction: column;
   align-items: center;
   font-weight: 500;
-  color: #000;
+  color: ${({ $color }) => $color || "#000"};
   line-height: 18px;
 
-  span.label {
-    font-size: 12px;
-    color: #999;
-    font-weight: normal;
+  .item-content {
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
+`;
+
+const Dot = styled.span.attrs(() => ({ children: "⸱" }))`
+  display: inline-block;
+  color: #999;
+  font-size: 16px;
+  line-height: 1;
+  user-select: none;
 `;
 
 class RouteSummaryControl extends React.Component {
@@ -50,7 +60,7 @@ class RouteSummaryControl extends React.Component {
 
   createContainer() {
     const container = document.createElement("div");
-    container.className = "mapboxgl-ctrl"; // consistent with other map controls
+    container.className = "mapboxgl-ctrl";
     return container;
   }
 
@@ -92,18 +102,26 @@ class RouteSummaryControl extends React.Component {
     return createPortal(
       <SummaryContainer>
         <SummaryItem>
-          {this.formatLength(lengthInMeters)}
-          <span className="label">Distance</span>
+          <div className="item-content">
+            {this.formatLength(lengthInMeters)}
+          </div>
         </SummaryItem>
+        <Dot />
         <SummaryItem>
-          {this.formatTime(travelTimeInSeconds)}
-          <span className="label">Time</span>
+          <div className="item-content">
+            {this.formatTime(travelTimeInSeconds)}
+          </div>
         </SummaryItem>
         {trafficDelayInSeconds > 0 && (
-          <SummaryItem>
-            {this.formatTime(trafficDelayInSeconds)}
-            <span className="label">Delay</span>
-          </SummaryItem>
+          <React.Fragment>
+            <Dot />
+            <SummaryItem $color={DefaultColorPalette.tt_ix_d_red}>
+              <div className="item-content">
+                <JamIcon size={20} />
+                {this.formatTime(trafficDelayInSeconds)}
+              </div>
+            </SummaryItem>
+          </React.Fragment>
         )}
       </SummaryContainer>,
       this._container

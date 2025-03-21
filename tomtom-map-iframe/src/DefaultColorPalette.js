@@ -3,6 +3,7 @@ const DefaultColorPalette = {
   tt_primary_color_600: "#1988CF",
   tt_primary_color_500: "#3F9CD9",
   tt_primary_color_400: "#8DC3EB",
+  tt_primary_color_300: "#C5E1F3",
   tt_color_title_light: "#000000",
   tt_color_body_light: "#727C85",
   tt_neutral_color_100: "#F4F5F6",

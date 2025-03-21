@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import ReactMap from "react-tomtom-maps";
 import Route from "./Route";
 import MarkerLayer from "./MarkerLayer";
@@ -21,7 +21,7 @@ const Map = ({ apiKey, center, zoom, routeGeoJson, locationsGeoJson }) => {
     style: MapStyles.street
   });
   const [bounds, setBounds] = useState();
-  const routeSummary = routeGeoJson?.features[0]?.properties.summary;
+  const [selectedRouteId, setselectedRouteId] = useState();
 
   useEffect(() => {
     if (routeGeoJson) {
@@ -36,6 +36,19 @@ const Map = ({ apiKey, center, zoom, routeGeoJson, locationsGeoJson }) => {
       style: MapStyles[name]
     });
   };
+
+  const handleRouteSelected = (routeId) => {
+    setselectedRouteId(routeId);
+  };
+
+  const routeSummary = useMemo(() => {
+    if (!routeGeoJson?.features?.length) return null;
+
+    const feature =
+      routeGeoJson.features.find((f) => f.id === selectedRouteId) ||
+      routeGeoJson.features[0];
+    return feature?.properties?.summary || null;
+  }, [routeGeoJson, selectedRouteId]);
 
   return (
     <ReactMap
@@ -65,7 +78,12 @@ const Map = ({ apiKey, center, zoom, routeGeoJson, locationsGeoJson }) => {
         <RouteSummaryControl summary={routeSummary} position="top-left" />
       )}
       {routeGeoJson && (
-        <Route before="Borders - Treaty label" data={routeGeoJson} />
+        <Route
+          before="Borders - Treaty label"
+          data={routeGeoJson}
+          selected={selectedRouteId}
+          onSelect={handleRouteSelected}
+        />
       )}
       {locationsGeoJson && <MarkerLayer data={locationsGeoJson} />}
     </ReactMap>

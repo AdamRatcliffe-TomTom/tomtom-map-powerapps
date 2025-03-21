@@ -20,10 +20,12 @@ const Icon = styled.div`
 `;
 
 const MarkerLayer = ({ data }) =>
-  data?.features.map(({ geometry: { coordinates }, properties: { type } }) => (
-    <Marker coordinates={coordinates}>
-      <Icon type={type} />
-    </Marker>
-  ));
+  data?.features.map(
+    ({ geometry: { coordinates }, properties: { type } }, index) => (
+      <Marker key={index} coordinates={coordinates}>
+        <Icon type={type} />
+      </Marker>
+    )
+  );
 
 export default MarkerLayer;
