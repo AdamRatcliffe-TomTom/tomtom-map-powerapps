@@ -109,7 +109,7 @@ export class TomTomMap
     const latitude = Number(context.parameters.latitude.raw) || 0;
     const longitude = Number(context.parameters.longitude.raw) || 0;
     const zoom = context.parameters.zoom.raw || 12;
-
+    const map = context.parameters.map.raw || "";
     const url = context.parameters.url?.raw || "";
     const method = context.parameters.method?.raw || "GET";
     const headersRaw = context.parameters.headers?.raw || "";
@@ -137,6 +137,7 @@ export class TomTomMap
           apiKey,
           center: [longitude, latitude],
           zoom,
+          map,
           url,
           method,
           headers,

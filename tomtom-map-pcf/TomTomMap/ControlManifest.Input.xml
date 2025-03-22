@@ -25,6 +25,10 @@
 		<property name="latitude" display-name-key="Latitude" description-key="Latitude field" of-type="Decimal" usage="input" required="false" default-value="37.7749" />
 		<property name="longitude" display-name-key="Longitude" description-key="Longitude field" of-type="Decimal" usage="input" required="false" default-value="-122.4194" />
 		<property name="zoom" display-name-key="Zoom level" description-key="Zoom level field" of-type="Decimal" usage="input" required="false" default-value="12" />
+		<property name="map" display-name-key="Map" description-key="Map used by API" of-type="Enum" usage="input" required="false" default-value="genesis">
+  		<value name="genesis" display-name-key="Genesis">genesis</value>
+  		<value name="orbis" display-name-key="Orbis">orbis</value>
+		</property>
 		<property name="url" display-name-key="Request URL" description-key="Request URL" of-type="SingleLine.Text" usage="input" required="false" />
 		<property name="method" display-name-key="HTTP Method" description-key="HTTP Method (GET, POST, etc.)" of-type="SingleLine.Text" usage="input" required="false" />
 		<property name="headers" display-name-key="Headers" description-key="HTTP Headers (JSON format)" of-type="SingleLine.TextArea" usage="input" required="false" />

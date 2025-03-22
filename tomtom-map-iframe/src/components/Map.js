@@ -14,14 +14,30 @@ const fitBoundsOptions = {
   animate: false
 };
 
-const Map = ({ apiKey, center, zoom, routeGeoJson, locationsGeoJson }) => {
+const Map = ({
+  map = "orbis",
+  apiKey,
+  center,
+  zoom,
+  routeGeoJson,
+  locationsGeoJson
+}) => {
   const mapRef = useRef();
   const [mapStyle, setMapStyle] = useState({
     name: "street",
-    style: MapStyles.street
+    style: MapStyles.street[map]
   });
   const [bounds, setBounds] = useState();
   const [selectedRouteId, setselectedRouteId] = useState();
+
+  useEffect(() => {
+    if (mapStyle.name === "street") {
+      setMapStyle({
+        name: "street",
+        style: MapStyles.street[map]
+      });
+    }
+  }, [map]);
 
   useEffect(() => {
     if (routeGeoJson) {
@@ -31,10 +47,8 @@ const Map = ({ apiKey, center, zoom, routeGeoJson, locationsGeoJson }) => {
   }, [routeGeoJson]);
 
   const handleMapStyleSelected = (name) => {
-    setMapStyle({
-      name,
-      style: MapStyles[name]
-    });
+    const style = name === "street" ? MapStyles.street[map] : MapStyles[name];
+    setMapStyle({ name, style });
   };
 
   const handleRouteSelected = (routeId) => {
