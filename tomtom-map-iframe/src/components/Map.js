@@ -37,7 +37,7 @@ const Map = ({
         style: MapStyles.street[map]
       });
     }
-  }, [map]);
+  }, [map, mapStyle.name]);
 
   useEffect(() => {
     if (routeGeoJson) {
