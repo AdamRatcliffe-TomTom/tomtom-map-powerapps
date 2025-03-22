@@ -30,11 +30,7 @@
   		<value name="orbis" display-name-key="Orbis">orbis</value>
 		</property>
 		<property name="url" display-name-key="Request URL" description-key="Request URL" of-type="SingleLine.Text" usage="input" required="false" />
-		<!-- <property name="method" display-name-key="Method" description-key="Method_Desc" of-type="Enum" usage="bound" required="true">
-  		<value name="GET" display-name-key="GET">0</value>
-  		<value name="POST" display-name-key="POST">1</value>
-		</property> -->
-		<property name="method" display-name-key="Method" description-key="Method_Desc" of-type="OptionSet" usage="input" required="true" />
+		<property name="method" display-name-key="Method" description-key="Method_Desc" of-type="OptionSet" usage="input" required="false" />
 		<property name="headers" display-name-key="Headers" description-key="HTTP Headers (JSON format)" of-type="Multiple" usage="input" required="false" />
 		<property name="body" display-name-key="Body" description-key="Request body (JSON or raw)" of-type="Multiple" usage="input" required="false" />
 		<!--
