@@ -33,7 +33,7 @@ const SummaryItem = styled.div`
 
 const Dot = styled.span.attrs(() => ({ children: "⸱" }))`
   display: inline-block;
-  color: #999;
+  color: ${DefaultColorPalette.tt_color_body_light};
   font-size: 16px;
   line-height: 1;
   user-select: none;
