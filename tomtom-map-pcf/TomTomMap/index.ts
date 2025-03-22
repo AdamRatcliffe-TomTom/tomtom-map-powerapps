@@ -8,6 +8,11 @@ const mapUrl = isRunningLocally
   ? "http://localhost:3000/tomtom-map-iframe"
   : "https://cpmdemos.blob.core.windows.net/$web/tomtom-map-iframe/index.html";
 
+const methodMap: Record<number, string> = {
+  0: "GET",
+  1: "POST"
+};
+
 export class TomTomMap
   implements ComponentFramework.StandardControl<IInputs, IOutputs>
 {
@@ -111,7 +116,7 @@ export class TomTomMap
     const zoom = context.parameters.zoom.raw || 12;
     const map = context.parameters.map.raw || "";
     const url = context.parameters.url?.raw || "";
-    const method = context.parameters.method?.raw || "GET";
+    const method = methodMap[context.parameters.method.raw ?? 0];
     const headersRaw = context.parameters.headers?.raw || "";
     const body = context.parameters.body?.raw || "";
 

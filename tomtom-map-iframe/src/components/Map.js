@@ -15,7 +15,7 @@ const fitBoundsOptions = {
 };
 
 const Map = ({
-  map = "orbis",
+  map: mapType = "orbis",
   apiKey,
   center,
   zoom,
@@ -23,21 +23,15 @@ const Map = ({
   locationsGeoJson
 }) => {
   const mapRef = useRef();
-  const [mapStyle, setMapStyle] = useState({
-    name: "street",
-    style: MapStyles.street[map]
-  });
+  const [selectedRouteId, setSelectedRouteId] = useState();
   const [bounds, setBounds] = useState();
-  const [selectedRouteId, setselectedRouteId] = useState();
+  const [mapStyleName, setMapStyleName] = useState("street");
 
-  useEffect(() => {
-    if (mapStyle.name === "street") {
-      setMapStyle({
-        name: "street",
-        style: MapStyles.street[map]
-      });
-    }
-  }, [map, mapStyle.name]);
+  const computedMapStyle = useMemo(() => {
+    return mapStyleName === "street"
+      ? MapStyles.street[mapType]
+      : MapStyles[mapStyleName];
+  }, [mapStyleName, mapType]);
 
   useEffect(() => {
     if (routeGeoJson) {
@@ -47,17 +41,15 @@ const Map = ({
   }, [routeGeoJson]);
 
   const handleMapStyleSelected = (name) => {
-    const style = name === "street" ? MapStyles.street[map] : MapStyles[name];
-    setMapStyle({ name, style });
+    setMapStyleName(name);
   };
 
   const handleRouteSelected = (routeId) => {
-    setselectedRouteId(routeId);
+    setSelectedRouteId(routeId);
   };
 
   const routeSummary = useMemo(() => {
     if (!routeGeoJson?.features?.length) return null;
-
     const feature =
       routeGeoJson.features.find((f) => f.id === selectedRouteId) ||
       routeGeoJson.features[0];
@@ -67,13 +59,9 @@ const Map = ({
   return (
     <ReactMap
       ref={mapRef}
-      key={apiKey}
       apiKey={apiKey}
-      mapStyle={mapStyle.style}
-      containerStyle={{
-        width: "100vw",
-        height: "100vh"
-      }}
+      mapStyle={computedMapStyle}
+      containerStyle={{ width: "100vw", height: "100vh" }}
       fitBoundsOptions={fitBoundsOptions}
       movingMethod="jumpTo"
       center={center}
@@ -83,7 +71,8 @@ const Map = ({
       <ControlGroup position="bottom-left" $display="flex" $gap="10u">
         <MapSwitcherControl
           apiKey={apiKey}
-          selected={mapStyle.name}
+          mapType={mapType}
+          selected={mapStyleName}
           onSelected={handleMapStyleSelected}
         />
         <TrafficControl />

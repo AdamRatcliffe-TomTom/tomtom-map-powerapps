@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import styled from "styled-components";
 import _capitalize from "lodash.capitalize";
 import { tombac, Text, propStyling } from "tombac";
@@ -44,15 +44,19 @@ const MapSwitcher = styled.div`
 const MapSwitcherControl = ({
   map,
   apiKey,
+  mapType = "orbis",
   selected = "street",
   onSelected = () => {},
   ...otherProps
 }) => {
-  const [styleName, setStyleName] = useState(
-    selected === "street" ? "satellite" : "street"
-  );
-  const [mapStyle, setMapStyle] = useState(MapStyles[styleName]);
   const [bounds, setBounds] = useState(map?.getBounds().toArray());
+  const nextStyleName = selected === "street" ? "satellite" : "street";
+
+  const previewStyle = useMemo(() => {
+    return nextStyleName === "street"
+      ? MapStyles.street[mapType]
+      : MapStyles[nextStyleName];
+  }, [nextStyleName, mapType]);
 
   useEffect(() => {
     const handleMapViewChange = () => {
@@ -63,18 +67,11 @@ const MapSwitcherControl = ({
     return () => map && map.off("moveend", handleMapViewChange);
   }, [map]);
 
-  useEffect(() => {
-    const styleName = selected === "street" ? "satellite" : "street";
-    const mapStyle = MapStyles[styleName];
-    setStyleName(styleName);
-    setMapStyle(mapStyle);
-  }, [selected]);
-
   const handleStyleData = (map) => {
     map.__om.style.stylesheet.layers.forEach((layer) => {
       if (
         layer.type === "symbol" ||
-        (styleName === "satellite" && layer.type === "line")
+        (nextStyleName === "satellite" && layer.type === "line")
       ) {
         map.getLayer(layer.id) && map.removeLayer(layer.id);
       }
@@ -82,27 +79,24 @@ const MapSwitcherControl = ({
   };
 
   const handleClick = () => {
-    const newSelected = selected === "street" ? "satellite" : "street";
-    onSelected(newSelected);
+    onSelected(nextStyleName);
   };
 
   return (
     <MapSwitcher className="MapSwitcher" onClick={handleClick} {...otherProps}>
       <Map
         apiKey={apiKey}
-        mapStyle={mapStyle}
+        mapStyle={previewStyle}
         containerStyle={{ width: "72px", height: "46px" }}
-        mapOptions={{
-          interactive: false
-        }}
+        mapOptions={{ interactive: false }}
         movingMethod="jumpTo"
-        fitBoundsOptions={{
-          animate: false
-        }}
+        fitBoundsOptions={{ animate: false }}
         bounds={bounds}
+        center={map?.getCenter?.().toArray?.() || [0, 0]}
+        zoom={map?.getZoom?.() || 1}
         onStyleData={handleStyleData}
-      ></Map>
-      <Text>{_capitalize(styleName)}</Text>
+      />
+      <Text>{_capitalize(nextStyleName)}</Text>
     </MapSwitcher>
   );
 };
