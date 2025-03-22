@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import _capitalize from "lodash.capitalize";
 import { tombac, Text, propStyling } from "tombac";
 import { withMap } from "react-tomtom-maps";
 import DefaultColorPalette from "../DefaultColorPalette";
@@ -13,7 +12,7 @@ const StyledTrafficControl = styled.div`
   flex-direction: column;
   align-items: center;
   width: ${tombac.unit(80)};
-  height: ${tombac.unit(80)};
+  height: ${tombac.unit(76)};
   padding: ${tombac.space(0.5, 0.5, 0)};
   border-radius: ${tombac.unit(6)};
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -43,7 +42,7 @@ const TrafficControl = ({ map, defaultShowTraffic = false, ...otherProps }) => {
       map.showTrafficFlow();
       map.showTrafficIncidents();
     }
-  }, []);
+  }, [map, defaultShowTraffic]);
 
   const handleClick = () => {
     const value = !showTraffic;
@@ -63,7 +62,10 @@ const TrafficControl = ({ map, defaultShowTraffic = false, ...otherProps }) => {
       onClick={handleClick}
       {...otherProps}
     >
-      <img src={showTraffic ? noTrafficMapImage : trafficMapImage} />
+      <img
+        src={showTraffic ? noTrafficMapImage : trafficMapImage}
+        alt="Traffic"
+      />
       <Text>{showTraffic ? "Hide traffic" : "Show traffic"}</Text>
     </StyledTrafficControl>
   );

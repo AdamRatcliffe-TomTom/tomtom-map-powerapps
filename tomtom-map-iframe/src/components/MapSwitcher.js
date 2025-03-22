@@ -11,7 +11,7 @@ const MapSwitcher = styled.div`
   flex-direction: column;
   align-items: center;
   width: ${tombac.unit(80)};
-  height: ${tombac.unit(80)};
+  height: ${tombac.unit(76)};
   padding: ${tombac.space(0.5, 0.5, 0)};
   border-radius: ${tombac.unit(6)};
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
@@ -55,6 +55,10 @@ const MapSwitcherControl = ({
   const [bounds, setBounds] = useState(map?.getBounds().toArray());
 
   useEffect(() => {
+    const handleMapViewChange = () => {
+      setBounds(map?.getBounds().toArray());
+    };
+
     map && map.on("moveend", handleMapViewChange);
     return () => map && map.off("moveend", handleMapViewChange);
   }, [map]);
@@ -80,10 +84,6 @@ const MapSwitcherControl = ({
   const handleClick = () => {
     const newSelected = selected === "street" ? "satellite" : "street";
     onSelected(newSelected);
-  };
-
-  const handleMapViewChange = () => {
-    setBounds(map?.getBounds().toArray());
   };
 
   return (

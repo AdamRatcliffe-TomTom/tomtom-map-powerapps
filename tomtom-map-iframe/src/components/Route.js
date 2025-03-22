@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { GeoJSONLayer, Source, withMap } from "react-tomtom-maps";
+import { GeoJSONLayer, withMap } from "react-tomtom-maps";
 import DefaultColorPalette from "../DefaultColorPalette";
 
 const lineLayout = {
@@ -70,16 +70,9 @@ const Route = React.memo(
 
     const renderFeatureLayers = (feature, isSelected = false) => (
       <React.Fragment key={`route-feature-${feature.id}`}>
-        <Source
-          id={`route-source-${feature.id}`}
-          geoJsonSource={{
-            type: "geojson",
-            data: feature
-          }}
-        />
         <GeoJSONLayer
           id={`route-casing-${feature.id}`}
-          sourceId={`route-source-${feature.id}`}
+          data={feature}
           type="line"
           lineLayout={lineLayout}
           linePaint={{
@@ -95,7 +88,7 @@ const Route = React.memo(
         />
         <GeoJSONLayer
           id={`route-line-${feature.id}`}
-          sourceId={`route-source-${feature.id}`}
+          data={feature}
           type="line"
           lineLayout={lineLayout}
           linePaint={{
