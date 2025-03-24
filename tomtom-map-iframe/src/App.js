@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Spinner from "components/Spinner";
 import Message from "components/Message";
+import visualizationMap from "components/visualizations/visualizationMap";
 import fetchRequestData from "helpers/fetchRequestData";
 import inferRequestType from "helpers/inferRequestType";
-import CalculateRouteVisualization from "components/visualizations/CalculateRouteVisualization";
-
-const visualizations = {
-  calculateRoute: CalculateRouteVisualization
-};
 
 function App() {
   const [config, setConfig] = useState(null);
@@ -53,7 +49,7 @@ function App() {
 
   const requestType = inferRequestType(config.url);
 
-  const VisualizationComponent = visualizations[requestType];
+  const VisualizationComponent = visualizationMap[requestType];
 
   if (!VisualizationComponent) {
     return (

@@ -4,14 +4,14 @@ import geoJsonBounds from "helpers/geoJsonBounds";
 import Route from "./components/Route";
 import MarkerLayer from "./components/MarkerLayer";
 import RouteSummaryControl from "./components/RouteSummaryControl";
-import calculateRouteResponseToGeoJson from "./helpers/calculateRouteResponseToGeoJson";
+import convertToGeoJson from "./helpers/convertToGeoJson";
 import parseRouteUrlToGeoJson from "./helpers/parseRouteUrlToGeoJson";
 
 const CalculateRouteVisualization = ({ config, responseData }) => {
   const [selectedRouteId, setSelectedRouteId] = useState(null);
 
   const routeGeoJson = useMemo(() => {
-    return responseData ? calculateRouteResponseToGeoJson(responseData) : null;
+    return responseData ? convertToGeoJson(responseData) : null;
   }, [responseData]);
 
   const locationsGeoJson = useMemo(() => {

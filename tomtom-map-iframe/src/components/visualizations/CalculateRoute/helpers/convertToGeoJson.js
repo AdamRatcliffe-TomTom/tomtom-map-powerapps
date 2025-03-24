@@ -1,9 +1,4 @@
-/**
- * Converts a TomTom Routing API response to a GeoJSON FeatureCollection.
- * @param {Object} routingResponse - The JSON response from the Routing API.
- * @returns {Object} GeoJSON FeatureCollection.
- */
-export default function calculateRouteResponseToGeoJson(routingResponse) {
+export default function convertToGeoJson(routingResponse) {
   if (!routingResponse || !Array.isArray(routingResponse.routes)) {
     return {
       type: "FeatureCollection",
