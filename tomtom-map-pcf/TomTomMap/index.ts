@@ -114,11 +114,13 @@ export class TomTomMap
     const latitude = Number(context.parameters.latitude.raw) || 0;
     const longitude = Number(context.parameters.longitude.raw) || 0;
     const zoom = context.parameters.zoom.raw || 12;
-    const map = context.parameters.map.raw || "";
     const url = context.parameters.url?.raw || "";
     const method = methodMap[context.parameters.method.raw ?? 0];
     const headersRaw = context.parameters.headers?.raw || "";
     const body = context.parameters.body?.raw || "";
+
+    // Infer map type based on URL content
+    const map = url && !url.includes("orbis") ? "genesis" : "orbis";
 
     let headers: { key: string; value: string }[] = [];
     try {
@@ -142,11 +144,11 @@ export class TomTomMap
           apiKey,
           center: [longitude, latitude],
           zoom,
-          map,
           url,
           method,
           headers,
-          body
+          body,
+          map
         }
       },
       "*"
