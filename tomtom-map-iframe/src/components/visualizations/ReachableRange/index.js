@@ -1,8 +1,19 @@
 import React, { useMemo } from "react";
+import styled from "styled-components";
+import { GeoJSONLayer, Marker } from "react-tomtom-maps";
+import markerIcons from "components/markerIcons";
 import Map from "components/Map";
 import geoJsonBounds from "helpers/geoJsonBounds";
 import convertToGeoJson from "./helpers/convertToGeoJson";
-import { GeoJSONLayer } from "react-tomtom-maps";
+import parseOriginFromUrl from "./helpers/parseOriginFromUrl";
+
+const OriginIcon = styled.div`
+  width: 32px;
+  height: 40px;
+  background-image: url(${markerIcons.origin});
+  background-repeat: no-repeat;
+  background-size: contain;
+`;
 
 const ReachableRangeVisualization = ({ config, responseData }) => {
   const reachableRangeGeoJson = useMemo(
@@ -17,6 +28,8 @@ const ReachableRangeVisualization = ({ config, responseData }) => {
 
   if (!reachableRangeGeoJson) return null;
 
+  const originCoordinates = parseOriginFromUrl(config.url);
+
   return (
     <Map {...config} bounds={bounds}>
       <GeoJSONLayer
@@ -24,10 +37,17 @@ const ReachableRangeVisualization = ({ config, responseData }) => {
         data={reachableRangeGeoJson}
         type="fill"
         fillPaint={{
-          "fill-color": "rgba(0, 120, 220, 0.3)",
-          "fill-outline-color": "rgba(0, 120, 220, 0.8)"
+          "fill-color": "rgba(0, 120, 220, 0.2)"
+        }}
+        linePaint={{
+          "line-color": "rgba(0, 120, 220, 0.8)",
+          "line-width": 1,
+          "line-dasharray": [2, 2]
         }}
       />
+      <Marker coordinates={originCoordinates}>
+        <OriginIcon />
+      </Marker>
     </Map>
   );
 };

@@ -1,4 +1,4 @@
-export default function parseRouteUrlToGeoJson(url) {
+export default function parseUrlToGeoJson(url) {
   const result = {
     type: "FeatureCollection",
     features: []

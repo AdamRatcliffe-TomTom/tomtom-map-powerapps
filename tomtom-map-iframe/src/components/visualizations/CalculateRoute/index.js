@@ -5,7 +5,7 @@ import Route from "./components/Route";
 import MarkerLayer from "./components/MarkerLayer";
 import RouteSummaryControl from "./components/RouteSummaryControl";
 import convertToGeoJson from "./helpers/convertToGeoJson";
-import parseRouteUrlToGeoJson from "./helpers/parseRouteUrlToGeoJson";
+import parseUrlToGeoJson from "./helpers/parseUrlToGeoJson";
 
 const CalculateRouteVisualization = ({ config, responseData }) => {
   const [selectedRouteId, setSelectedRouteId] = useState(null);
@@ -15,7 +15,7 @@ const CalculateRouteVisualization = ({ config, responseData }) => {
   }, [responseData]);
 
   const locationsGeoJson = useMemo(() => {
-    return config.url ? parseRouteUrlToGeoJson(config.url) : null;
+    return config.url ? parseUrlToGeoJson(config.url) : null;
   }, [config.url]);
 
   const bounds = useMemo(() => {
