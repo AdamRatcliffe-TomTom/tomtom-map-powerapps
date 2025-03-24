@@ -5,7 +5,7 @@ import axios from "axios";
  * @param {Object} config - Configuration object with url, method, headers, body, apiKey.
  * @returns {Promise<Object>} - Resolves with response data.
  */
-export const fetchRequestData = async (config) => {
+const fetchRequestData = async (config) => {
   if (!config?.url) {
     throw new Error("Missing URL in request config");
   }
@@ -37,3 +37,5 @@ export const fetchRequestData = async (config) => {
   const response = await axios(axiosOptions);
   return response.data;
 };
+
+export default fetchRequestData;

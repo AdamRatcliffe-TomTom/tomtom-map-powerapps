@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { GeoJSONLayer, withMap } from "react-tomtom-maps";
-import DefaultColorPalette from "../DefaultColorPalette";
+import DefaultColorPalette from "DefaultColorPalette";
 
 const lineLayout = {
   "line-join": "round",

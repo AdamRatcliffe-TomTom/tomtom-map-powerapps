@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { tombac, Text, propStyling } from "tombac";
 import { withMap } from "react-tomtom-maps";
-import DefaultColorPalette from "../DefaultColorPalette";
+import DefaultColorPalette from "DefaultColorPalette";
 
-import trafficMapImage from "../images/map-traffic.svg";
-import noTrafficMapImage from "../images/map-no-traffic.svg";
+import trafficMapImage from "images/map-traffic.svg";
+import noTrafficMapImage from "images/map-no-traffic.svg";
 
 const StyledTrafficControl = styled.div`
   display: flex;

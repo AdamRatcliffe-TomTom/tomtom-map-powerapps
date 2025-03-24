@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
 import { withMap } from "react-tomtom-maps";
 import styled from "styled-components";
-import JamIcon from "./icons/JamIcon";
-import DefaultColorPalette from "../DefaultColorPalette";
+import JamIcon from "components/icons/JamIcon";
+import DefaultColorPalette from "DefaultColorPalette";
 
 const SummaryContainer = styled.div`
   display: flex;

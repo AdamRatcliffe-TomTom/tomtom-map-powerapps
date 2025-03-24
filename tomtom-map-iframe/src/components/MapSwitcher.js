@@ -3,8 +3,8 @@ import styled from "styled-components";
 import _capitalize from "lodash.capitalize";
 import { tombac, Text, propStyling } from "tombac";
 import Map, { withMap } from "react-tomtom-maps";
-import DefaultColorPalette from "../DefaultColorPalette";
-import MapStyles from "../constants/MapStyles";
+import DefaultColorPalette from "DefaultColorPalette";
+import MapStyles from "constants/MapStyles";
 
 const MapSwitcher = styled.div`
   display: flex;

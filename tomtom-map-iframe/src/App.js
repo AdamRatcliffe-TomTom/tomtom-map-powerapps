@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import Map from "./components/Map";
-import Spinner from "./components/Spinner";
-import Message from "./components/Message";
-import { fetchRequestData } from "./helpers/fetchRequestData";
-import calculateRouteResponseToGeoJson from "./helpers/calculateRouteResponseToGeoJson";
-import parseRouteUrlToGeoJson from "./helpers/parseRouteUrlToGeoJson";
+import Spinner from "components/Spinner";
+import Message from "components/Message";
+import fetchRequestData from "helpers/fetchRequestData";
+import inferRequestType from "helpers/inferRequestType";
+import CalculateRouteVisualization from "components/visualizations/CalculateRouteVisualization";
+
+const visualizations = {
+  calculateRoute: CalculateRouteVisualization
+};
 
 function App() {
   const [config, setConfig] = useState(null);
-  const [routeGeoJson, setRouteGeoJson] = useState(null);
-  const [locationsGeoJson, setLocationsGeoJson] = useState(null);
+  const [responseData, setResponseData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleMessage = (e) => {
       const message = e.data;
-
       if (!message || message.type !== "pcfMapConfig") return;
 
       const payload = message.payload;
@@ -37,11 +38,7 @@ function App() {
     const runRequest = async () => {
       try {
         const data = await fetchRequestData(config);
-        const routeGeoJson = calculateRouteResponseToGeoJson(data);
-        setRouteGeoJson(routeGeoJson);
-
-        const locationsGeoJson = parseRouteUrlToGeoJson(config.url);
-        setLocationsGeoJson(locationsGeoJson);
+        setResponseData(data);
       } catch (err) {
         console.error("Request error:", err);
         setError(err.message || "Request failed");
@@ -54,15 +51,19 @@ function App() {
   if (error) return <Message variant="error">{error}</Message>;
   if (!config) return <Spinner />;
 
-  return (
-    <Map
-      {...config}
-      width={window.innerWidth}
-      height={window.innerHeight}
-      routeGeoJson={routeGeoJson}
-      locationsGeoJson={locationsGeoJson}
-    />
-  );
+  const requestType = inferRequestType(config.url);
+
+  const VisualizationComponent = visualizations[requestType];
+
+  if (!VisualizationComponent) {
+    return (
+      <Message variant="error">
+        No visualization available for request type: {requestType}
+      </Message>
+    );
+  }
+
+  return <VisualizationComponent config={config} responseData={responseData} />;
 }
 
 export default App;
