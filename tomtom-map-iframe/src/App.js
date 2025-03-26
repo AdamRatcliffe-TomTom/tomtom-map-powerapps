@@ -31,6 +31,9 @@ function App() {
   useEffect(() => {
     if (!config?.url) return;
 
+    setError(null);
+    setResponseData(null);
+
     const runRequest = async () => {
       try {
         const data = await fetchRequestData(config);

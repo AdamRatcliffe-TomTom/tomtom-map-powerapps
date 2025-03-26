@@ -15,12 +15,11 @@ const fetchRequestData = async (config) => {
     urlObj.searchParams.set("key", config.apiKey);
   }
 
-  const headers = Array.isArray(config.headers)
-    ? config.headers.reduce((acc, { key, value }) => {
-        acc[key] = value;
-        return acc;
-      }, {})
-    : {};
+  // Use headers as-is, assuming it's a plain object
+  const headers =
+    typeof config.headers === "object" && config.headers !== null
+      ? config.headers
+      : {};
 
   const method = (config.method || "GET").toUpperCase();
 
