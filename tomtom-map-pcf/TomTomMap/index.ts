@@ -122,16 +122,13 @@ export class TomTomMap
     // Infer map type based on URL content
     const map = url && !url.includes("orbis") ? "genesis" : "orbis";
 
-    let headers: { key: string; value: string }[] = [];
+    let headers: Record<string, string> = {};
     try {
       const parsed = JSON.parse(headersRaw);
-      if (Array.isArray(parsed)) {
+      if (typeof parsed === "object" && !Array.isArray(parsed)) {
         headers = parsed;
-      } else if (typeof parsed === "object") {
-        headers = Object.entries(parsed).map(([key, value]) => ({
-          key,
-          value: String(value)
-        }));
+      } else {
+        console.warn("Headers are not in expected object format.");
       }
     } catch (e) {
       console.warn("Could not parse headers JSON:", e);
@@ -154,7 +151,6 @@ export class TomTomMap
       "*"
     );
   }
-
   public updateView(context: ComponentFramework.Context<IInputs>): void {
     this._context = context;
     this.renderMap();

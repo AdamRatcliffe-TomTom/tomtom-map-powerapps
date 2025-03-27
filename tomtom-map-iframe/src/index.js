@@ -1,15 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
+import { FluentProvider, webLightTheme } from "@fluentui/react-components";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import "tombac-icons/react/style.css";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <FluentProvider theme={webLightTheme}>
+      <App />
+    </FluentProvider>
   </React.StrictMode>
 );
 

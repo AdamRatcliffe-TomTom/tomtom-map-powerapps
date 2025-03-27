@@ -48,7 +48,7 @@ const Map = ({
     <ReactMap
       apiKey={apiKey}
       mapStyle={computedMapStyle}
-      containerStyle={{ width: "100vw", height: "100vh" }}
+      containerStyle={{ width: "100%", height: "100%" }}
       fitBoundsOptions={fitBoundsOptions}
       movingMethod="jumpTo"
       center={center}

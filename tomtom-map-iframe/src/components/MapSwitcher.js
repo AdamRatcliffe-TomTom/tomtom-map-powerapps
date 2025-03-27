@@ -30,7 +30,7 @@ const MapSwitcher = styled.div`
 
   ${Text} {
     ${tombac.text({
-      fontFamily: "inherit",
+      fontFamily: "Segoe UI",
       fontSize: 12,
       fontWeight: 500,
       color: DefaultColorPalette.tt_color_title_light,
