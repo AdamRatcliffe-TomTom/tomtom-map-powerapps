@@ -6,6 +6,8 @@ import ControlGroup from "./ControlGroup";
 import MapSwitcherControl from "./MapSwitcher";
 import TrafficControl from "./TrafficControl";
 
+const poiLayerId = "POI";
+
 const fitBoundsOptions = {
   padding: { top: 90, right: 32, bottom: 32, left: 32 },
   animate: false
@@ -20,6 +22,7 @@ const Map = ({
   children
 }) => {
   const mapRef = useRef();
+  const styleLoaded = useRef(false);
   const [mapStyleName, setMapStyleName] = useState("street");
   const [mapReady, setMapIsReady] = useState(false);
 
@@ -34,6 +37,24 @@ const Map = ({
     attributionControl?.setSeparator(" - ");
     attributionControl?.addAttribution(_capitalize(mapType));
   }, [mapType, mapReady]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+
+    if (!map) return;
+
+    if (styleLoaded.current) {
+      if (map.getLayer(poiLayerId)) {
+        map.setLayoutProperty(poiLayerId, "visibility", "none");
+      }
+    } else {
+      map.on("style.load", () => {
+        if (map.getLayer(poiLayerId)) {
+          map.setLayoutProperty(poiLayerId, "visibility", "none");
+        }
+      });
+    }
+  }, [mapRef.current]);
 
   const handleMapRender = (map) => {
     mapRef.current = map;
