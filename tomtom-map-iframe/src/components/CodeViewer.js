@@ -8,7 +8,7 @@ import "prismjs/themes/prism.css";
 const Container = styled.div`
   height: 100%;
   overflow: auto;
-  background-color: rgb(245, 245, 245);
+  background-color: rgb(250, 250, 250);
   padding-left: 8px;
 `;
 

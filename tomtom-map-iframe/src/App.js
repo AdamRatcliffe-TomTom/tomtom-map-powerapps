@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { TabList, Tab } from "@fluentui/react-components";
 import Spinner from "components/Spinner";
 import Message from "components/Message";
+import StatusIndicator from "components/StatusIndicator";
 import CodeViewer from "components/CodeViewer";
+import HeadersViewer from "components/HeadersViewer";
 import visualizationMap from "components/visualizations/visualizationMap";
 import fetchRequestData from "helpers/fetchRequestData";
 import inferRequestType from "helpers/inferRequestType";
 
+// Layout
 const RootContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -19,9 +22,23 @@ const ContentArea = styled.div`
   overflow: hidden;
 `;
 
+// Tab row layout
+const TabRow = styled(TabList)`
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+// Tab group (holds the Tab buttons)
+const TabGroup = styled.div`
+  display: flex;
+  flex: 0 1 auto;
+`;
+
 function App() {
   const [config, setConfig] = useState(null);
-  const [responseData, setResponseData] = useState(null);
+  const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [selectedTab, setSelectedTab] = useState("map");
 
@@ -45,32 +62,40 @@ function App() {
     if (!config?.url) return;
 
     setError(null);
-    setResponseData(null);
+    setResponse(null);
 
     const runRequest = async () => {
       try {
-        const data = await fetchRequestData(config);
-        setResponseData(data);
+        const res = await fetchRequestData(config);
+        setResponse(res);
       } catch (err) {
-        console.error("Request error:", err);
-        setError(err.message || "Request failed");
+        setResponse(err.response);
+        setSelectedTab("body");
       }
     };
 
     runRequest();
   }, [config]);
 
-  const requestType = config?.url ? inferRequestType(config.url) : null;
+  const isSuccess = response?.status >= 200 && response?.status < 300;
+  const requestType =
+    isSuccess && config?.url ? inferRequestType(config.url) : null;
   const VisualizationComponent = requestType
     ? visualizationMap[requestType]
     : null;
   const hasVisualization = Boolean(VisualizationComponent);
 
   useEffect(() => {
-    if (config && !hasVisualization) {
-      setSelectedTab("response");
+    if (!response) return;
+
+    const isError = response.status >= 400;
+
+    if (!hasVisualization || isError) {
+      setSelectedTab("body");
+    } else {
+      setSelectedTab("map");
     }
-  }, [hasVisualization, config]);
+  }, [response, hasVisualization]);
 
   const onTabSelect = (_e, data) => {
     setSelectedTab(data.value.toString());
@@ -81,27 +106,38 @@ function App() {
 
   return (
     <RootContainer>
-      <TabList
-        selectedValue={selectedTab}
-        onTabSelect={onTabSelect}
-        style={{ marginBottom: 5 }}
-      >
-        {hasVisualization && (
-          <Tab className="no-focus-ring" value="map">
-            Map
+      <TabRow selectedValue={selectedTab} onTabSelect={onTabSelect}>
+        <TabGroup>
+          {hasVisualization && (
+            <Tab className="no-focus-ring" value="map">
+              Map
+            </Tab>
+          )}
+          <Tab className="no-focus-ring" value="body">
+            Body
           </Tab>
-        )}
-        <Tab className="no-focus-ring" value="response">
-          Response
-        </Tab>
-      </TabList>
+          <Tab className="no-focus-ring" value="headers">
+            Headers
+          </Tab>
+        </TabGroup>
+        <StatusIndicator
+          status={response?.status}
+          statusText={response?.statusText}
+        />
+      </TabRow>
 
       <ContentArea>
         {selectedTab === "map" && hasVisualization && config && (
-          <VisualizationComponent config={config} responseData={responseData} />
+          <VisualizationComponent
+            config={config}
+            responseData={response?.data}
+          />
         )}
-        {selectedTab === "response" && responseData && (
-          <CodeViewer value={JSON.stringify(responseData, null, 2)} />
+        {selectedTab === "body" && response?.data && (
+          <CodeViewer value={JSON.stringify(response.data, null, 2)} />
+        )}
+        {selectedTab === "headers" && response?.headers && (
+          <HeadersViewer headers={response.headers} />
         )}
       </ContentArea>
     </RootContainer>
