@@ -20,7 +20,8 @@ const SummaryItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-weight: 500;
+  font-family: "Segoe UI";
+  font-weight: 600;
   color: ${({ $color }) => $color || "#000"};
   line-height: 18px;
 
