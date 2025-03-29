@@ -9,7 +9,7 @@ export default function convertToGeoJson(responseData, mapType) {
 
     const props = {
       ...result,
-      name: poi?.name || address?.freeformAddress,
+      name: poi?.name || address?.freeformAddress?.split(",")[0],
       category: getCategoryForPoi(poi, mapType),
       group: getGroupForPoi(poi)
     };

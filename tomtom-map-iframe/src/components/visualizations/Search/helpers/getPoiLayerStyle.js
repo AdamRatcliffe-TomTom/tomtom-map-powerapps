@@ -63,6 +63,7 @@ export function getPoiLayerStyle(mapType) {
       ["get", "name"]
     ],
     "text-font": [
+      "Noto-Bold",
       "Noto-Medium",
       "NotoSans-CondensedMedium",
       "NotoSansThaiMerged-CondensedMedium",
@@ -82,16 +83,8 @@ export function getPoiLayerStyle(mapType) {
     "text-letter-spacing": 0.1,
     "text-line-height": 1.2,
     "text-optional": ["step", ["zoom"], true, 13, false],
-    "text-offset": [0, 1.5],
-    "text-size": [
-      "interpolate",
-      ["linear"],
-      ["zoom"],
-      10,
-      ["/", 14, ["log10", ["max", ["length", ["get", "name"]], 30]]],
-      18,
-      ["/", 18, ["log10", ["max", ["length", ["get", "name"]], 30]]]
-    ],
+    "text-radial-offset": 1.5,
+    "text-size": ["/", 16, ["log10", ["max", ["length", ["get", "name"]], 30]]],
     "text-variable-anchor": ["top", "left", "bottom", "right"]
   };
 

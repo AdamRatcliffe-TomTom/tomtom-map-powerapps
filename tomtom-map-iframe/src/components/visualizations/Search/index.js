@@ -14,6 +14,8 @@ const SearchVisualization = ({ config, responseData }) => {
   const bounds = useMemo(() => geoJsonBounds(geoJson), [geoJson]);
   const poiStyle = useMemo(() => getPoiLayerStyle(config?.map), [config]);
 
+  console.log("geoJson: ", geoJson);
+
   return (
     <Map {...config} bounds={bounds}>
       {poiStyle && (
