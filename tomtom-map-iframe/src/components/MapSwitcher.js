@@ -52,11 +52,10 @@ const MapSwitcherControl = ({
   const [bounds, setBounds] = useState(map?.getBounds().toArray());
   const nextStyleName = selected === "street" ? "satellite" : "street";
 
-  const previewStyle = useMemo(() => {
-    return nextStyleName === "street"
-      ? MapStyles.street[mapType]
-      : MapStyles[nextStyleName];
-  }, [nextStyleName, mapType]);
+  const previewStyle = useMemo(
+    () => MapStyles[nextStyleName][mapType],
+    [nextStyleName, mapType]
+  );
 
   useEffect(() => {
     const handleMapViewChange = () => {

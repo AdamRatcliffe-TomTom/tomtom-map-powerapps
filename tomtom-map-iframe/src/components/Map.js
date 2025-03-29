@@ -26,11 +26,10 @@ const Map = ({
   const [mapStyleName, setMapStyleName] = useState("street");
   const [mapReady, setMapIsReady] = useState(false);
 
-  const computedMapStyle = useMemo(() => {
-    return mapStyleName === "street"
-      ? MapStyles.street[mapType]
-      : MapStyles[mapStyleName];
-  }, [mapStyleName, mapType]);
+  const computedMapStyle = useMemo(
+    () => MapStyles[mapStyleName][mapType],
+    [mapStyleName, mapType]
+  );
 
   useEffect(() => {
     const attributionControl = mapRef.current?.getAttributionControl();
